@@ -2,7 +2,6 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
-import MsgShort from "../components/MsgShort";
 import Footer from "../components/Footer";
 import { fetchMessages } from "../helpers/messagesHelpers";
 
@@ -22,7 +21,7 @@ export default function Home() {
   const user = useRecoilValue(userState);
 
   useEffect(() => {
-    fetchMessages()
+    fetchMessages(user)
       .then((msgs) => {
         setMessages(msgs);
       })
