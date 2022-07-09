@@ -5,8 +5,7 @@ import styles from "../styles/Home.module.css";
 import MsgShort from "../components/MsgShort";
 import Footer from "../components/Footer";
 import { fetchMessages } from "../helpers/messagesHelpers";
-
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import {
   numUnreadMessagesState,
   numMessagesState,
@@ -15,10 +14,10 @@ import {
 } from "../store/state.js";
 import { useEffect } from "react";
 
-export default function Home() {
+export default function MessagesList() {
   const numUnreadMsgs = useRecoilValue(numUnreadMessagesState);
   const numMsgs = useRecoilValue(numMessagesState);
-  const setMessages = useSetRecoilState(messagesState);
+  const [messages, setMessages] = useRecoilState(messagesState);
   const user = useRecoilValue(userState);
 
   useEffect(() => {
@@ -40,18 +39,11 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>hello {user.firstName}</h1>
-
-        <p className={styles.description}>
-          You have {numUnreadMsgs} unread messages out of {numMsgs} total.
-        </p>
-        <div className={styles.grid}>
-          <Link href="/messages-list">
-            <a className={styles.card}>
-              <button>View Messages</button>
-            </a>
-          </Link>
-        </div>
+        {messages?.map?.((msg) => {
+          debugger;
+          return <MsgShort key={user.email} msg={msg} />;
+        })}
+        ;
       </main>
 
       <Footer />
