@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "../styles/messages.module.scss";
+import styles from "../styles/Messages.module.scss";
 import Message from "../components/Message";
 import Footer from "../components/Footer";
 import { fetchMessages } from "../helpers/messagesHelpers";
@@ -25,22 +25,31 @@ export default function MessagesList() {
     useRecoilState(selectedMessageState);
   const router = useRouter();
 
-  useEffect(() => {
-    setSelectedMessage(null);
-    fetchMessages(user)
-      .then((msgs) => {
-        setMessages(msgs);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  function handleMessageClick(clickedMsg) {
+    if (!clickedMsg) {
+      throw new Error("No msg provided");
+    }
+
+    const clickedMsgClone = JSON.parse(JSON.stringify(clickedMsg));
+    clickedMsgClone.read = true;
+    const messagesClone = JSON.parse(JSON.stringify(messages));
+    const msgIndex = messages.indexOf(clickedMsg);
+    messagesClone[msgIndex] = clickedMsgClone;
+    setMessages(messagesClone);
+    setSelectedMessage(clickedMsgClone);
+  }
 
   useEffect(() => {
-    if (selectedMessage) {
-      router.push("/message");
+    if (!selectedMessage) {
+      fetchMessages(user)
+        .then((msgs) => {
+          setMessages(msgs);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
-  }, [selectedMessage]);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -55,13 +64,15 @@ export default function MessagesList() {
         <ul className="messages-list">
           {messages?.map?.((msg) => {
             return (
-              <li
-                key={msg.id}
-                className="messages-list-item"
-                onClick={() => setSelectedMessage(msg)}
-              >
-                <Message size="small" msg={msg} />
-              </li>
+              <Link href="/message">
+                <li
+                  key={msg.id}
+                  className="messages-list-item"
+                  onClick={() => handleMessageClick(msg)}
+                >
+                  <Message size="small" msg={msg} />
+                </li>
+              </Link>
             );
           })}
         </ul>
