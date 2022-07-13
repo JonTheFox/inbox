@@ -50,7 +50,7 @@ export default function MessagesList() {
   const filterMessages = useCallback(
     (queryStr) => {
       const filteredMessages = messages.filter((msg) => {
-        return msg.content?.toLowerCase?.()?.includes(queryStr.toLowerCase());
+        return msg.content?.toLowerCase?.()?.includes(queryStr.toLowerCase);
       });
       setFilteredMessages(filteredMessages);
     },
