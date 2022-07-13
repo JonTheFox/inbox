@@ -9,6 +9,7 @@ export default function TextInput({ onChange }) {
     <input
       className={`${styles.input} glass`}
       onChange={(ev) => handleChange(ev)}
+      placeholder="Search E-mails..."
     />
   );
 }
