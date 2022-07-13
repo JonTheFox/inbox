@@ -1,29 +1,39 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { messagesState } from "../store/state.js";
 import styles from "../styles/Messages.module.scss";
-import { FaBeer, MiDelete } from "react-icons/fa";
 
 const Message = ({ msg = {}, size = "small" }) => {
   const { subject = "", content = "", read = false, id } = msg;
   const [messages, setMessages] = useRecoilState(messagesState);
 
-  const deleteMsg = useCallback(function (ev, msg) {
-    ev.stopPropagation();
-    const msgIndex = messages.indexOf(msg);
-    const messagesClone = JSON.parse(JSON.stringify(messages));
-    messagesClone.splice(msgIndex, 1);
-    setMessages(messagesClone);
-  }, []);
+  const deleteMsg = useCallback(
+    function (ev, msg) {
+      ev.stopPropagation();
+      const msgIndex = messages.indexOf(msg);
+      const messagesClone = JSON.parse(JSON.stringify(messages));
+      messagesClone.splice(msgIndex, 1);
+      setMessages(messagesClone);
+    },
+    [messages, setMessages]
+  );
 
-  const markMsgAsRead = useCallback(function (ev, id) {
-    ev.stopPropagation();
-    const msg = messages.find((item) => item.id === id);
-    const msgIndex = messages.indexOf(msg);
-    const messagesClone = JSON.parse(JSON.stringify(messages));
-    messagesClone[msgIndex].read = !read;
-    setMessages(messagesClone);
-  }, []);
+  const markMsgAsRead = useCallback(
+    function (ev, id) {
+      ev.stopPropagation();
+      const msg = messages.find((item) => item.id === id);
+      const msgIndex = messages.indexOf(msg);
+      const messagesClone = JSON.parse(JSON.stringify(messages));
+      // toggle the message's "read" state
+      messagesClone[msgIndex].read = !read;
+      setMessages(messagesClone);
+    },
+    [messages, setMessages]
+  );
+
+  useEffect(() => {
+    console.log("messages: ", messages);
+  }, [messages]);
 
   return (
     <div
@@ -36,7 +46,7 @@ const Message = ({ msg = {}, size = "small" }) => {
         <ul>
           <li>
             <button
-              class="material-symbols-outlined"
+              className="material-symbols-outlined"
               onClick={(ev) => markMsgAsRead(ev, id)}
             >
               {read ? "check_box" : "check_box_outline_blank"}
@@ -44,7 +54,7 @@ const Message = ({ msg = {}, size = "small" }) => {
           </li>
           <li>
             <button
-              class="material-symbols-outlined"
+              className="material-symbols-outlined"
               onClick={(ev) => deleteMsg(ev, msg)}
             >
               delete

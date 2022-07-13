@@ -1,6 +1,3 @@
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import styles from "../styles/Messages.module.scss";
 import Message from "../components/Message";
 import Footer from "../components/Footer";
@@ -9,8 +6,6 @@ import MainHead from "../components/MainHead";
 import { fetchMessages } from "../helpers/messagesHelpers";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
-  numUnreadMessagesState,
-  numMessagesState,
   messagesState,
   userState,
   selectedMessageState,
@@ -20,8 +15,6 @@ import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function MessagesList() {
-  const numUnreadMsgs = useRecoilValue(numUnreadMessagesState);
-  const numMsgs = useRecoilValue(numMessagesState);
   const [messages, setMessages] = useRecoilState(messagesState);
   const user = useRecoilValue(userState);
   const [selectedMessage, setSelectedMessage] =
@@ -50,7 +43,9 @@ export default function MessagesList() {
   const filterMessages = useCallback(
     (queryStr) => {
       const filteredMessages = messages.filter((msg) => {
-        return msg.content?.toLowerCase?.()?.includes(queryStr.toLowerCase);
+        return msg.content
+          ?.toLowerCase?.()
+          ?.includes(queryStr?.toLowerCase?.());
       });
       setFilteredMessages(filteredMessages);
     },
@@ -69,6 +64,10 @@ export default function MessagesList() {
         });
     }
   }, []);
+
+  useEffect(() => {
+    setFilteredMessages(messages);
+  }, [messages]);
 
   return (
     <div className={styles.container}>
