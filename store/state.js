@@ -44,10 +44,16 @@ const userState = atom({
   },
 });
 
+const filteredMessagesState = atom({
+  key: "filteredsMessages",
+  default: [],
+});
+
 export {
   messagesState,
   selectedMessageState,
   numMessagesState,
   numUnreadMessagesState,
   userState,
+  filteredMessagesState,
 };
