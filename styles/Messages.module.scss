@@ -1,6 +1,76 @@
-.msg--read {
-  background: gray;
+.message {
+  padding: 0.5rem;
+  border: 1px black solid;
+  transition: background-color 0.1s;
+  font-size: 1rem;
+
+  .title {
+    display: inline;
+    margin: 0;
+    line-height: 0.5;
+    padding: 0.25rem;
+    font-size: 1rem;
+    margin-left: 0;
+  }
+
+  ul {
+    display: flex;
+    margin: auto;
+    margin-right: 0;
+    opacity: 0;
+  }
+
+  &:hover {
+    ul {
+      opacity: 1;
+    }
+  }
 }
-.msg--unread {
-  background: white;
+
+.read {
+  background-color: var(--color-4);
+}
+.unread {
+  background-color: white;
+}
+
+.messages-list {
+  width: 100%;
+}
+
+.small {
+  .p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding-left: 0.25rem;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    background-color: var(--color-3);
+  }
+}
+
+.large {
+  width: 100%;
+  height: 100%;
+  border: none;
+
+  .title {
+    text-align: center;
+    font-size: 1.35rem;
+  }
+
+  .p {
+    font-size: 1.2rem;
+  }
+}
+
+.heading-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

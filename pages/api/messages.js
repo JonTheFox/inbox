@@ -1,7 +1,13 @@
 // TODO: connect to a DB and fetch the data from there
 
 const MOCK_MESSAGES = [
-  { content: "MOCK CONTENT 1", subject: "Subject 1", read: false, id: 1 },
+  {
+    content:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    subject: "Subject 1",
+    read: false,
+    id: 1,
+  },
   { content: "MOCK CONTENT 2", subject: "Subject 2", read: false, id: 2 },
   { content: "MOCK CONTENT 3", subject: "Subject 3", read: false, id: 3 },
   { content: "MOCK CONTENT 4", subject: "Subject 4", read: false, id: 4 },

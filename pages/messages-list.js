@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "../styles/Messages.module.scss";
 import Message from "../components/Message";
 import Footer from "../components/Footer";
+import MainHead from "../components/MainHead";
 import { fetchMessages } from "../helpers/messagesHelpers";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
@@ -37,6 +38,8 @@ export default function MessagesList() {
     messagesClone[msgIndex] = clickedMsgClone;
     setMessages(messagesClone);
     setSelectedMessage(clickedMsgClone);
+
+    router.push("/message");
   }
 
   useEffect(() => {
@@ -53,26 +56,20 @@ export default function MessagesList() {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Inbox</title>
-        <meta name="description" content="Homepage" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MainHead />
 
-      <main className={styles.main}>
-        <h1 className="title">Messages</h1>
-        <ul className="messages-list">
+      <main>
+        <h1 className="header glass">Messages</h1>
+        <ul className={styles["messages-list"]}>
           {messages?.map?.((msg) => {
             return (
-              <Link href="/message">
-                <li
-                  key={msg.id}
-                  className="messages-list-item"
-                  onClick={() => handleMessageClick(msg)}
-                >
-                  <Message size="small" msg={msg} />
-                </li>
-              </Link>
+              <li
+                className={styles["messages-list-item"]}
+                onClick={() => handleMessageClick(msg)}
+                key={msg.id}
+              >
+                <Message size="small" msg={msg} />
+              </li>
             );
           })}
         </ul>

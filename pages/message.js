@@ -4,6 +4,7 @@ import Link from "next/link";
 import styles from "../styles/Messages.module.scss";
 import Message from "../components/Message";
 import Footer from "../components/Footer";
+import MainHead from "../components/MainHead";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
   numUnreadMessagesState,
@@ -27,17 +28,13 @@ export default function MessagePage() {
 
   useEffect(() => {
     if (!selectedMessage) {
-      router.push("/messages-list");
+      router.push("/");
     }
   }, []);
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Inbox</title>
-        <meta name="description" content="Homepage" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MainHead />
 
       <main className="main">
         {selectedMessage && <Message size="large" msg={selectedMessage} />}

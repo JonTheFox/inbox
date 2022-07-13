@@ -1,9 +1,9 @@
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import Footer from "../components/Footer";
 import { fetchMessages } from "../helpers/messagesHelpers";
+import MainHead from "../components/MainHead";
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -32,25 +32,19 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Inbox</title>
-        <meta name="description" content="Homepage" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <MainHead />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>hello {user.firstName}</h1>
-
-        <p className={styles.description}>
+      <main>
+        <h1 className="glass header">hello {user.firstName}</h1>
+        <p className="description">
           You have {numUnreadMsgs} unread messages out of {numMsgs} total.
         </p>
-        <div className={styles.grid}>
-          <Link href="/messages-list">
-            <a className={styles.card}>
-              <button>View Messages</button>
-            </a>
-          </Link>
-        </div>
+
+        <Link href="/messages-list">
+          <a className="glass btn">
+            <button>View Messages</button>
+          </a>
+        </Link>
       </main>
 
       <Footer />
