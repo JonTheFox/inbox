@@ -21,7 +21,6 @@ export default function Home() {
   const [messages, setMessages] = useRecoilState(messagesState);
 
   useEffect(() => {
-    debugger;
     if (!messages || !messages.length) {
       fetchMessages(user)
         .then((msgs) => {

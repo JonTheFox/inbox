@@ -49,7 +49,7 @@
     font-size: 0.9rem;
   }
 
-  &:hover {
+  &:hover:not(.read) {
     background-color: var(--color-3);
   }
 }
