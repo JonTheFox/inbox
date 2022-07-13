@@ -13,4 +13,15 @@ const fetchMessages = async (user) => {
   return messages;
 };
 
-export { fetchMessages };
+const filterMessages = (queryStr = "", messages = []) => {
+  const filteredMessages = messages.filter((msg) => {
+    const loweredCaseQuery = queryStr?.toLowerCase?.();
+    return (
+      msg.content?.toLowerCase?.()?.includes(loweredCaseQuery) ||
+      msg.title?.toLowerCase?.()?.includes(loweredCaseQuery)
+    );
+  });
+  setFilteredMessages(filteredMessages);
+};
+
+export { fetchMessages, filterMessages };
