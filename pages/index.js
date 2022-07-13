@@ -4,30 +4,34 @@ import Footer from "../components/Footer";
 import { fetchMessages } from "../helpers/messagesHelpers";
 import MainHead from "../components/MainHead";
 
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import {
   numUnreadMessagesState,
   numMessagesState,
   messagesState,
   userState,
 } from "../store/state.js";
+
 import { useEffect } from "react";
 
 export default function Home() {
   const numUnreadMsgs = useRecoilValue(numUnreadMessagesState);
   const numMsgs = useRecoilValue(numMessagesState);
-  const setMessages = useSetRecoilState(messagesState);
   const user = useRecoilValue(userState);
+  const [messages, setMessages] = useRecoilState(messagesState);
 
   useEffect(() => {
-    fetchMessages(user)
-      .then((msgs) => {
-        setMessages(msgs);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+    debugger;
+    if (!messages || !messages.length) {
+      fetchMessages(user)
+        .then((msgs) => {
+          setMessages(msgs);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [messages, fetchMessages, setMessages]);
 
   return (
     <div className={styles.container}>

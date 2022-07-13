@@ -1,25 +1,24 @@
 import { useCallback, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { messagesState } from "../store/state.js";
+import { messagesState, selectedMessageState } from "../store/state.js";
 import styles from "../styles/Messages.module.scss";
 
-const Message = ({ msg = {}, size = "small" }) => {
+const Message = ({ msg = {}, size = "small", onDelete }) => {
   const { subject = "", content = "", read = false, id } = msg;
   const [messages, setMessages] = useRecoilState(messagesState);
+  const [selectedMessage, setSelectedMessage] =
+    useRecoilState(selectedMessageState);
 
   const deleteMsg = useCallback(
-    function (ev, msg) {
+    (ev, msg) => {
       ev.stopPropagation();
-      const msgIndex = messages.indexOf(msg);
-      const messagesClone = JSON.parse(JSON.stringify(messages));
-      messagesClone.splice(msgIndex, 1);
-      setMessages(messagesClone);
+      onDelete?.(msg);
     },
     [messages, setMessages]
   );
 
   const markMsgAsRead = useCallback(
-    function (ev, id) {
+    (ev, id) => {
       ev.stopPropagation();
       const msg = messages.find((item) => item.id === id);
       const msgIndex = messages.indexOf(msg);
@@ -30,10 +29,6 @@ const Message = ({ msg = {}, size = "small" }) => {
     },
     [messages, setMessages]
   );
-
-  useEffect(() => {
-    console.log("messages: ", messages);
-  }, [messages]);
 
   return (
     <div

@@ -10,6 +10,7 @@ import {
   userState,
   selectedMessageState,
   filteredMessagesState,
+  queryState,
 } from "../store/state.js";
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -19,9 +20,8 @@ export default function MessagesList() {
   const user = useRecoilValue(userState);
   const [selectedMessage, setSelectedMessage] =
     useRecoilState(selectedMessageState);
-  const [filteredMessages, setFilteredMessages] = useRecoilState(
-    filteredMessagesState
-  );
+  const [query, setQuery] = useRecoilState(queryState);
+  const filteredMessages = useRecoilValue(filteredMessagesState);
   const router = useRouter();
 
   function handleMessageClick(clickedMsg) {
@@ -40,34 +40,28 @@ export default function MessagesList() {
     router.push("/message");
   }
 
-  const filterMessages = useCallback(
-    (queryStr) => {
-      const filteredMessages = messages.filter((msg) => {
-        return msg.content
-          ?.toLowerCase?.()
-          ?.includes(queryStr?.toLowerCase?.());
-      });
-      setFilteredMessages(filteredMessages);
+  const onMessageDelete = useCallback(
+    (msg) => {
+      const msgIndex = messages.indexOf(msg);
+      const messagesClone = JSON.parse(JSON.stringify(messages));
+      messagesClone.splice(msgIndex, 1);
+      setMessages(messagesClone);
+      setSelectedMessage(null);
     },
-    [messages]
+    [messages, setMessages, setSelectedMessage]
   );
 
   useEffect(() => {
-    if (!selectedMessage) {
+    if (!messages || !messages.length) {
       fetchMessages(user)
         .then((msgs) => {
           setMessages(msgs);
-          setFilteredMessages(msgs);
         })
         .catch((err) => {
           console.error(err);
         });
     }
-  }, []);
-
-  useEffect(() => {
-    setFilteredMessages(messages);
-  }, [messages]);
+  }, [messages, fetchMessages, setMessages]);
 
   return (
     <div className={styles.container}>
@@ -75,7 +69,7 @@ export default function MessagesList() {
 
       <main>
         <h1 className="header glass">Messages</h1>
-        <TextInput onChange={(value) => filterMessages(value)} />
+        <TextInput value={query} onChange={(value) => setQuery(value)} />
         <ul className={styles["messages-list"]}>
           {filteredMessages?.map?.((msg) => {
             return (
@@ -84,7 +78,7 @@ export default function MessagesList() {
                 onClick={() => handleMessageClick(msg)}
                 key={msg.id}
               >
-                <Message size="small" msg={msg} />
+                <Message size="small" msg={msg} onDelete={onMessageDelete} />
               </li>
             );
           })}

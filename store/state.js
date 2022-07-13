@@ -44,9 +44,23 @@ const userState = atom({
   },
 });
 
-const filteredMessagesState = atom({
+const queryState = atom({
+  key: "query",
+  default: "",
+});
+
+const filteredMessagesState = selector({
   key: "filteredsMessages",
-  default: [],
+  get: ({ get }) => {
+    const query = get(queryState).trim().toLowerCase();
+    const messages = get(messagesState);
+    return messages.filter((msg) => {
+      return (
+        msg.content?.toLowerCase().includes(query) ||
+        msg.title?.toLowerCase().includes(query)
+      );
+    });
+  },
 });
 
 export {
@@ -56,4 +70,5 @@ export {
   numUnreadMessagesState,
   userState,
   filteredMessagesState,
+  queryState,
 };
